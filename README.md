@@ -1,87 +1,75 @@
-📊 Extração e Tratamento de Dados – Transfermarkt (Flamengo 2025)
-📌 Sobre o Projeto
+# 📊 Extração e Tratamento de Dados – Transfermarkt (Flamengo 2025)
 
-Este projeto realiza a extração, limpeza e transformação de dados do elenco do CR Flamengo (temporada 2025) a partir do site Transfermarkt.
+## 📌 Sobre o Projeto
 
-A partir de uma página HTML não estruturada, os dados são coletados via Web Scraping com Python, tratados e estruturados em um DataFrame limpo e organizado, pronto para análise exploratória ou integração com ferramentas de Business Intelligence (como Power BI).
+Este projeto realiza a extração, limpeza e transformação de dados do elenco do Flamengo (temporada 2025) a partir do site Transfermarkt.
 
-O projeto segue a lógica de um pipeline ETL (Extract → Transform → Load).
+Os dados são obtidos via web scraping utilizando Python, processados com BeautifulSoup e estruturados em um DataFrame com Pandas, seguindo a lógica de um pipeline ETL (Extract → Transform → Load).
 
-🎯 Objetivo Técnico
+O dataset final fica organizado e pronto para análise exploratória ou integração com ferramentas de Business Intelligence (como Power BI).
 
-Extrair dados diretamente do HTML da página
+---
 
-Estruturar informações em formato tabular
+## 🎯 Objetivo Técnico
 
-Tratar e converter dados textuais em dados estruturados
+- Extrair dados diretamente do HTML da página  
+- Estruturar informações em formato tabular  
+- Separar campos combinados  
+- Realizar tratamento e conversão de dados  
+- Padronizar nomes de colunas  
+- Gerar dataset pronto para análise  
 
-Padronizar nomes de colunas
+---
 
-Gerar um dataset pronto para análise
+## 🚀 Tecnologias Utilizadas
 
-🚀 Tecnologias Utilizadas
+- Python 3.13.2
+- Requests
+- BeautifulSoup (lxml parser)
+- Pandas
+- Regex (re)
 
-Python 3.13.2
+---
 
-Requests – Requisições HTTP
+## 🔎 Pipeline do Projeto
 
-BeautifulSoup (lxml parser) – Parsing de HTML
+1. Requisição HTTP com headers personalizados  
+2. Parsing do HTML com BeautifulSoup  
+3. Extração da tabela principal do elenco  
+4. Separação de campos combinados  
+5. Limpeza e conversão de dados  
+6. Padronização de nomenclatura  
+7. Estruturação final em DataFrame  
 
-Pandas – Manipulação e transformação de dados
+---
 
-Regex (re) – Extração de padrões textuais
+## 🧹 Limpeza e Tratamento dos Dados
 
-🔎 Pipeline do Projeto
+Durante a extração, algumas colunas vieram com dados combinados ou em formato textual:
 
-1️⃣ Requisição HTTP com headers personalizados
-2️⃣ Parsing do HTML com BeautifulSoup
-3️⃣ Extração da tabela principal do elenco
-4️⃣ Separação de campos combinados
-5️⃣ Limpeza e conversão de dados
-6️⃣ Padronização dos nomes das colunas
-7️⃣ Estruturação final em DataFrame
+### 🔹 Coluna "Jogadores"
+- Original: Nome + Posição no mesmo bloco HTML  
+- Tratamento:
+  - Extração do Nome
+  - Criação da coluna Posição
+  - Ajuste da coluna original para conter apenas o nome
 
-🧹 Limpeza e Tratamento dos Dados (Transform)
+### 🔹 Coluna "Nasc./Idade"
+- Original: `DD/MM/AAAA (idade)`
+- Tratamento:
+  - Extração da idade (valor entre parênteses)
+  - Criação da coluna Idade
+  - Ajuste da coluna original para manter apenas a data de nascimento
 
-Durante a extração, algumas colunas vieram com dados combinados ou em formato textual que exigiram tratamento:
+### 🔹 Coluna "Altura"
+- Original: `1,93m`
+- Tratamento:
+  - Remoção do sufixo `m`
+  - Conversão para valor numérico (1.93)
 
-🔹 Coluna "Jogadores"
+### 🔹 Padronização de Colunas
 
-Original: Nome + Posição no mesmo bloco HTML
-
-Tratamento:
-
-Extração do Nome
-
-Criação da coluna Posição
-
-Ajuste da coluna original para conter apenas o nome
-
-🔹 Coluna "Nasc./Idade"
-
-Original: DD/MM/AAAA (idade)
-
-Tratamento:
-
-Extração da idade (valor entre parênteses)
-
-Criação da coluna Idade
-
-Ajuste da coluna original para manter apenas a data de nascimento
-
-🔹 Coluna "Altura"
-
-Original: 1,93m
-
-Tratamento:
-
-Remoção do sufixo m
-
-Conversão para valor numérico (1.93)
-
-Preparação para cálculos futuros
-
-🔹 Padronização de Nomes de Colunas
+```python 
 df = df.rename(columns={
     "#": "Número",
     "Nasc./Idade": "Data de Nasc.",
@@ -92,66 +80,67 @@ df = df.rename(columns={
     "Contrato": "Contrato Até",
     "Valor de mercado": "Valor Mercado(Euro)"
 })
-📊 Estrutura Final do Dataset
-Coluna	Tipo	Descrição
-Número	Int	Número da camisa
-Nome	String	Nome do jogador
-Posição	String	Posição em campo
-Idade	Int	Idade atual
-Data de Nasc.	Date	Data de nascimento
-Nacionalidade	String	País
-Altura	Float	Altura em metros
-Pé Dominante	String	Pé preferido
-No Time Desde	Date	Data de chegada
-Clube Anterior	String	Último clube
-Contrato Até	Date	Data de término
-Valor Mercado(Euro)	String	Valor estimado
-📷 Exemplo de Saída do DataFrame
+``` 
+---
 
-Abaixo está um recorte do dataset final após o processo de limpeza e transformação:
+## 📁 Estrutura Final dos Dados
 
-O dataset final apresenta os dados já tratados, com separação adequada de campos, padronização de colunas e conversão de tipos numéricos, tornando-o pronto para análise exploratória ou integração com ferramentas de BI.
+| Coluna | Descrição |
+|--------|-----------|
+| Número | Número da camisa |
+| Nome | Nome do jogador |
+| Posição | Posição em campo |
+| Idade | Idade atual |
+| Data de Nasc. | Data de nascimento |
+| Nacionalidade | País |
+| Altura | Altura em metros |
+| Pé Dominante | Pé preferido |
+| No Time Desde | Data de chegada |
+| Clube Anterior | Último clube |
+| Contrato Até | Data de término do contrato |
+| Valor Mercado(Euro) | Valor estimado de mercado |
 
-📦 Estrutura do Projeto
-extracao-e-tratamento-dados-transfermarkt-flamengo/
-│
-├── src/
-│   └── main.py
-│
-├── docs/
-│   └── preview.png
-│
-├── outputs/
-│
-├── requirements.txt
-├── .gitignore
-└── README.md
-📦 Como Executar o Projeto
-# Clone o repositório
+---
+
+## 📷 Exemplo de Saída do DataFrame
+
+![Preview do DataFrame](docs/preview.png)
+
+## 📦 Como executar o projeto
+
+1. Clone o repositório:
+
+```bash
 git clone https://github.com/SEUUSUARIO/extracao-e-tratamento-dados-transfermarkt-flamengo.git
+```
 
-# Acesse a pasta
+2. Acesse a pasta:
+
+```bash
 cd extracao-e-tratamento-dados-transfermarkt-flamengo
+```
 
-# Instale as dependências
+3. Instale as dependências:
+
+```bash
 pip install -r requirements.txt
+```
 
-# Execute o script
+4. Execute o script:
+
+```bash
 python src/main.py
-📈 Possíveis Expansões Futuras
+```
 
-Conversão do valor de mercado para tipo numérico
+## 📈 Possíveis Expansões Futuras
+- Conversão do valor de mercado para tipo numérico
+- Exportação automática para CSV/Excel
+- Criação de dashboard no Power BI
+- Automatização para múltiplos clubes
+- Aplicação de Análise Exploratória de Dados (EDA)
 
-Exportação automática para CSV/Excel
-
-Criação de dashboard no Power BI
-
-Automatização para múltiplos clubes
-
-Aplicação de Análise Exploratória de Dados (EDA)
-
-👨‍💻 Autor
-
+## 👨‍💻 Autor
 Pedro Vasconcelos de Pinho
 Estudante de Ciência da Computação
-Foco em Análise de Dados e Ciência de Dados
+Foco em Ciência de Dados
+
